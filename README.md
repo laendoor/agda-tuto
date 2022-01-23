@@ -4,7 +4,7 @@
 
 ## Part 1: Logical Foundations
 
-1. Naturals: Natural numbers
+1. [Naturals](1.LogicalFoundations/1.1.Naturals): Natural numbers
 1. Induction: Proof by Induction
 1. Relations: Inductive definition of relations
 1. Equality: Equality and equational reasoning
