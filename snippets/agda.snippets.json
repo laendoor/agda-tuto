@@ -1,0 +1,38 @@
+{
+	"Nat": {
+		"prefix": ["\\N", "\\nat"],
+		"body": "ℕ",
+		"description": "ℕ | Nat",
+		"scope": "agda"
+	},
+	"rightarrow": {
+		"prefix": ["\\to", "\\rightarrow", "\\->"],
+		"body": "→ ",
+		"description": "→",
+		"scope": "agda"
+	},
+	"monus": {
+		"prefix": "\\.-",
+		"body": "∸",
+		"description": "∸",
+		"scope": "agda"
+	},
+	"langle": {
+		"prefix": "\\<",
+		"body": "⟨",
+		"description": "⟨",
+		"scope": "agda"
+	},
+	"rangle": {
+		"prefix": "\\>",
+		"body": "⟩",
+		"description": "⟩",
+		"scope": "agda"
+	},
+	"angles": {
+		"prefix": "\\<>",
+		"body": "⟨⟩",
+		"description": "⟨⟩",
+		"scope": "agda"
+	},
+}
