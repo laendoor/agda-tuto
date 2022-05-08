@@ -5,23 +5,27 @@ open import plfa.part1.Naturals
 
 {-# BUILTIN NATURAL ℕ #-}
 
-module exercises.part1.Naturals.Ex01_example where
+module exercise.part1.Naturals.Ex02_example where
 
   _+_ : ℕ → ℕ → ℕ
   zero + n = n
   (suc m) + n = suc (m + n)
 
-  one = 0 + 1
+  _*_ : ℕ → ℕ → ℕ
+  zero    * n  =  zero
+  (suc m) * n  =  n + (m * n)
 
   _ = refl
-  _ = 3 + 4 ≡ 7
+  _ = 3 * 4 ≡ 12
   _ =
     begin
-      3 + 4
+      3 * 4
     ≡⟨⟩
-      suc (2 + 4)
+      (suc 2) * 4
     ≡⟨⟩
-      suc 6
+      4 + (2 * 4)
     ≡⟨⟩
-      7
+      4 + 8
+    ≡⟨⟩
+      12
     ∎

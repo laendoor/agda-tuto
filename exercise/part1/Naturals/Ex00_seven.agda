@@ -1,6 +1,6 @@
 open import plfa.part1.Naturals
 
-module exercises.part1.Naturals.Ex00_seven where
+module exercise.part1.Naturals.Ex00_seven where
 
   one   = suc zero
   two   = suc one

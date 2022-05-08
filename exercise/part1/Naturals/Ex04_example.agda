@@ -5,7 +5,7 @@ open import plfa.part1.Naturals
 
 {-# BUILTIN NATURAL ℕ #-}
 
-module exercises.part1.Naturals.Ex04_example where
+module exercise.part1.Naturals.Ex04_example where
 
   _∸_ : ℕ → ℕ → ℕ
   m     ∸ zero  = m

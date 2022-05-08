@@ -7,7 +7,7 @@ open Eq.≡-Reasoning using (begin_; _≡⟨⟩_; step-≡; _∎)
 open import Data.Nat using (ℕ; zero; suc; _+_; _*_; _∸_)
 
 -- Exercise *-distrib-+ (recommended)
-module exercises.part1.Induction.Ex02_distrib where
+module exercise.part1.Induction.Ex02_distrib where
   *-neutral′ : ∀ (n : ℕ) → n * zero ≡ zero
   *-neutral′ zero = refl
   *-neutral′ (suc n) =

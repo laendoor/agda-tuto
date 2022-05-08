@@ -3,7 +3,7 @@ open import Data.Nat
 open Eq using (_≡_; refl)
 open Eq.≡-Reasoning using (begin_; _≡⟨⟩_; _∎)
 
-module exercises.part1.Naturals.Ex05_Bin where
+module exercise.part1.Naturals.Ex05_Bin where
 
   data Bin : Set where
     ⟨⟩ : Bin

@@ -5,7 +5,7 @@ open import plfa.part1.Naturals
 
 {-# BUILTIN NATURAL ℕ #-}
 
-module exercises.part1.Naturals.Ex03_exponent where
+module exercise.part1.Naturals.Ex03_exponent where
 
   _+_ : ℕ → ℕ → ℕ
   zero + n = n

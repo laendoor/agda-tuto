@@ -9,7 +9,8 @@ open Tuto using (*-distrib-+)
 -- Exercise *-assoc (recommended)
 -- Show multiplication is associative, that is,
 --   (m * n) * p ≡ m * (n * p)
-module exercises.part1.Induction.Ex03_assoc where
+-- for all naturals m, n, and p.
+module exercise.part1.Induction.Ex03_assoc where
 
   *-assoc : ∀ (m n p : ℕ) → (m * n) * p ≡ m * (n * p)
   *-assoc zero n p = refl

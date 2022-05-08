@@ -7,7 +7,7 @@ open import Data.Nat using (ℕ; zero; suc; _+_; _*_; _∸_)
 open Tuto using (+-assoc′; +-identity′; +-suc′; +-comm′)
 
 -- Exercise +-swap (recommended)
-module exercises.part1.Induction.Ex01_swap where
+module exercise.part1.Induction.Ex01_swap where
   +-swap : ∀ (m n p : ℕ) → m + (n + p) ≡ n + (m + p)
   +-swap m n p =
     begin
