@@ -24,7 +24,7 @@ module exercise.part1.Induction.Ex04_comm where
     m + n + (p * m + p * n)
   ≡⟨ +-rearrange m n (p * m) (p * n) ⟩
     m + (n + p * m) + p * n
-  ≡⟨ {! cong (m +_) (cong (_+ (p * n)) (+-comm′ n (p * m))) !} ⟩
+  ≡⟨ cong (_+ (p * n)) (cong (m +_) (+-comm′ n (p * m))) ⟩
     m + (p * m + n) + p * n
   ≡⟨ sym (+-rearrange m (p * m) n (p * n))  ⟩
     (m + p * m) + (n + p * n)
