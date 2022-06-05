@@ -3,6 +3,9 @@ open Eq using (_≡_; refl; cong; sym)
 open Eq.≡-Reasoning using (begin_; _≡⟨⟩_; step-≡; _∎)
 open import Data.Nat using (ℕ; zero; suc; _+_; _*_; _∸_)
 
+-- Standard library
+-- import Data.Nat.Properties using (+-assoc; +-identityʳ; +-suc; +-comm)
+
 module plfa.part1.Induction where
   +-identityʳ : ∀ (m : ℕ) → m + zero ≡ m
   +-identityʳ zero =

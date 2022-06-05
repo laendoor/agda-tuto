@@ -1,7 +1,7 @@
 import Relation.Binary.PropositionalEquality as Eq
-import plfa.part1.Induction as Tuto
+import plfa.part1.Induction as TutoInduction
 
-open Tuto using (+-assoc′)
+open TutoInduction using (+-assoc′)
 open Eq using (_≡_; refl; cong; sym)
 open Eq.≡-Reasoning using (begin_; _≡⟨⟩_; step-≡; _∎)
 open import Data.Nat using (ℕ; zero; suc; _+_; _*_; _∸_)

@@ -15,12 +15,12 @@ open TutoEx using (*-neutral′; *-identity′; *-distrib-+)
 -- As with commutativity of addition, you will need to formulate and prove suitable lemmas.
 module exercise.part1.Induction.Ex04_comm where
 
-*-distrib2 : ∀ (p m n : ℕ) → p * (m + n) ≡ p * m + p * n
-*-distrib2 zero m n = refl
-*-distrib2 (suc p) m n = 
+*-distrib : ∀ (p m n : ℕ) → p * (m + n) ≡ p * m + p * n
+*-distrib zero m n = refl
+*-distrib (suc p) m n = 
   begin
     m + n + (p * (m + n))
-  ≡⟨ cong ((m + n) +_) (*-distrib2 p m n) ⟩
+  ≡⟨ cong ((m + n) +_) (*-distrib p m n) ⟩
     m + n + (p * m + p * n)
   ≡⟨ +-rearrange m n (p * m) (p * n) ⟩
     m + (n + p * m) + p * n
@@ -48,7 +48,7 @@ module exercise.part1.Induction.Ex04_comm where
     n * 1 + m * n
    ≡⟨ cong ((n * 1) +_) (*-comm m n) ⟩
     n * 1 + n * m
-   ≡⟨ sym (*-distrib2 n 1 m) ⟩
+   ≡⟨ sym (*-distrib n 1 m) ⟩
     n * (1 + m)
    ≡⟨ refl ⟩
     n * suc m
