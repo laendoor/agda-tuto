@@ -1,8 +1,7 @@
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_; refl; cong)
 open import Data.Nat using (ℕ; zero; suc; _+_; _*_)
-open import Data.Nat.Properties using (+-comm; +-identityʳ; *-distrib-+)
-open import plfa.part1.Induction using (*-distrib-+ʳ; *-distrib-+ˡ)
+open import Data.Nat.Properties using (+-comm; +-identityʳ)
 
 module plfa.part1.Relations where
 
@@ -214,18 +213,18 @@ data _<_ : ℕ → ℕ → Set where
 -- // It is also monotonic with regards to addition and multiplication.
 
 -- # Exercise `<-trans` (recommended)
--- // Show that strict inequality is transitive
+-- Show that strict inequality is transitive
 
 <-trans : ∀ {m n p : ℕ} → m < n → n < p → m < p
 <-trans z<s       (s<s n<p) = z<s
 <-trans (s<s m<n) (s<s n<p) = s<s (<-trans m<n n<p)
 
 -- # Exercise trichotomy (practice)
--- // Show that strict inequality satisfies a weak version of trichotomy,
--- // in the sense that for any `m` and `n` that one of the following holds: * `m < n`, * `m ≡ n`, or * `m > n`.
--- // Define `m > n` to be the same as `n < m`.
--- // You will need a suitable data declaration, similar to that used for totality.
--- // (We will show that the three cases are exclusive after we introduce negation)
+-- Show that strict inequality satisfies a weak version of trichotomy,
+-- in the sense that for any `m` and `n` that one of the following holds: * `m < n`, * `m ≡ n`, or * `m > n`.
+-- Define `m > n` to be the same as `n < m`.
+-- You will need a suitable data declaration, similar to that used for totality.
+-- (We will show that the three cases are exclusive after we introduce negation)
 
 infix 4 _>_
 data _>_ : ℕ → ℕ → Set where
@@ -253,8 +252,8 @@ data Trichotomy (m n : ℕ) : Set where
 
 
 -- # Exercise +-mono-< (practice)
--- // Show that addition is monotonic with respect to strict inequality.
--- // As with inequality, some additional definitions may be required.
+-- Show that addition is monotonic with respect to strict inequality.
+-- As with inequality, some additional definitions may be required.
 
 -- ∀ {m n p q : ℕ} → m < n → p < q → m + p < n + q
 
@@ -272,7 +271,7 @@ data Trichotomy (m n : ℕ) : Set where
 +-mono-< m n p q m<n p<q = <-trans (+-monoˡ-< m n p m<n) (+-monoʳ-< n p q p<q)
 
 -- # Exercise ≤-iff-< (recommended)
--- // Show that `suc m ≤ n` implies `m < n`, and conversely.
+-- Show that `suc m ≤ n` implies `m < n`, and conversely.
 
 -- ^ 1st: show `suc m ≤ n → m < n`
 ≤-iff-< : ∀ {m n : ℕ} → suc m ≤ n → m < n
@@ -285,22 +284,27 @@ data Trichotomy (m n : ℕ) : Set where
 <-iff-≤ {suc m} {suc n} (s<s m<n) = s≤s (<-iff-≤ m<n)
 
 -- # Exercise <-trans-revisited (practice)
--- // Give an alternative proof that strict inequality is transitive,
--- // using the relation between strict inequality and inequality
--- // and the fact that inequality is transitive.
+-- Give an alternative proof that strict inequality is transitive,
+-- using the relation between strict inequality and inequality
+-- and the fact that inequality is transitive.
 
--- ≤-iff-< : ∀ {m n : ℕ} → suc m ≤ n → m < n
--- <-iff-≤ : ∀ {m n : ℕ} → m < n → suc m ≤ n
-
-<-trans-revisited : ∀ {m n p : ℕ} → m < n → n < p → m < p
-<-trans-revisited m<n n<p = ≤-iff-< {!   !}
-    -- suc m ≤ p
+-- ^ mental notes
 -- m < n → suc m ≤ n
 -- n ≤ suc n
 -- n < p → suc n ≤ p
 -- suc m ≤ p → m < p
+-- ≤-iff-< : ∀ {m n : ℕ} → suc m ≤ n → m < n
+-- <-iff-≤ : ∀ {m n : ℕ} → m < n → suc m ≤ n
+-- ≤-trans : ∀ {m n p : ℕ} → m ≤ n → n ≤ p → m ≤ p
 
+n≤N : ∀ {n : ℕ} → n ≤ suc n
+n≤N {zero}  = z≤n
+n≤N {suc n} = s≤s n≤N
 
--- <-trans-revisited {m} {n} {p} m<n n<p
---   with <-iff-≤ m<n      | <-iff-≤ n<p
--- ... | s≤s {m} {n₁} m≤n₁ | s≤s {n2} {p2} n₁≤p = ≤-iff-< {!   !}
+<-trans-revisited : ∀ {m n p : ℕ} → m < n → n < p → m < p
+<-trans-revisited m<n n<p = ≤-iff-< (≤-trans (<-iff-≤ m<n) (≤-trans n≤N (<-iff-≤ n<p)))
+
+<-trans-revisitedʷ : ∀ {m n p : ℕ} → m < n → n < p → m < p
+<-trans-revisitedʷ m<n n<p
+  with <-iff-≤ m<n | <-iff-≤ n<p
+...   | m₁≤n       | n₁≤p       = ≤-iff-< (≤-trans m₁≤n (≤-trans n≤N n₁≤p))
