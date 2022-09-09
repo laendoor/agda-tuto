@@ -12,7 +12,7 @@
 		"scope": "agda"
 	},
 	"rightarrow": {
-		"prefix": ["\\to", "\\rightarrow", "\\->"],
+		"prefix": ["to", "\\to", "\\rightarrow", "\\->"],
 		"body": "→ ",
 		"description": "→",
 		"scope": "agda"
