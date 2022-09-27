@@ -6,19 +6,37 @@
 		"scope": "agda"
 	},
 	"Nat": {
-		"prefix": ["\\N", "\\nat"],
+		"prefix": "nat",
 		"body": "ℕ",
 		"description": "ℕ | Nat",
 		"scope": "agda"
 	},
+	"for-all": {
+		"prefix": ["forall", "all"],
+		"body": "∀ ",
+		"description": "∀ | For All",
+		"scope": "agda"
+	},
+	"for-all-nat": {
+		"prefix": ["for-all-nat"],
+		"body": "∀ {n : ℕ} ",
+		"description": "∀ {b : ℕ}",
+		"scope": "agda"
+	},
+	"for-all-bin": {
+		"prefix": ["for-all-bin"],
+		"body": "∀ {b : Bin} ",
+		"description": "∀ {b : Bin}",
+		"scope": "agda"
+	},
 	"rightarrow": {
-		"prefix": ["to", "\\to", "\\rightarrow", "\\->"],
+		"prefix": ["to", "->", "\\to", "\\rightarrow", "\\->"],
 		"body": "→ ",
 		"description": "→",
 		"scope": "agda"
 	},
 	"monus": {
-		"prefix": "\\.-",
+		"prefix": [".-", "monus"],
 		"body": "∸",
 		"description": "∸",
 		"scope": "agda"
@@ -40,21 +58,5 @@
 		"body": "⟨⟩",
 		"description": "⟨⟩",
 		"scope": "agda"
-	},
-	"module": {
-		"prefix": "module-",
-		"scope": "agda",
-		"body": [
-			"import Relation.Binary.PropositionalEquality as Eq",
-			"",
-			"open Eq using (_≡_; refl; cong; sym)",
-			"open Eq.≡-Reasoning using (begin_; _≡⟨⟩_; step-≡; _∎)",
-			"open import Data.Nat using (ℕ; zero; suc; _+_; _*_; _∸_)",
-			"",
-			"-- Exercise ${4}",
-			"-- ",
-			"module exercise.part${1}.${2}.Ex${3}_${4} where",
-			""
-		]
 	}
 }

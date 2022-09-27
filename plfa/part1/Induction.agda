@@ -546,16 +546,16 @@ law₁ (b I) =
     suc (from b + (from b + zero) + 1)
   ∎
 
--- invalid postulate
+-- !! invalid postulate
 postulate law₂ : ∀ (b : Bin) → to (from b) ≡ b
--- law₂ ⟨⟩ = 
---   begin
---     (⟨⟩ O)
---    ≡⟨ {!   !} ⟩ -- para mi no se puede
---     ⟨⟩
---   ∎
--- law₂ (b O) = {!   !}
--- law₂ (b I) = {!   !}
+{- law₂ ⟨⟩ = 
+  begin
+    (⟨⟩ O)
+   ≡⟨ {!   !} ⟩ -- ! no se puede
+    ⟨⟩
+  ∎
+law₂ (b O) = {!   !}
+law₂ (b I) = {!   !} -}
 
 law₃ : ∀ (n : ℕ) →  from (to n) ≡ n
 law₃ zero = refl

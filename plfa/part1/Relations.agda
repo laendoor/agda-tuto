@@ -1,7 +1,10 @@
 import Relation.Binary.PropositionalEquality as Eq
+import plfa.part1.Induction as Induction
 open Eq using (_≡_; refl; cong)
-open import Data.Nat using (ℕ; zero; suc; _+_; _*_)
+open Eq.≡-Reasoning using (begin_; _≡⟨⟩_; step-≡; _∎)
+open import Data.Nat using (ℕ; zero; suc; _+_; _*_; _∸_) 
 open import Data.Nat.Properties using (+-comm; +-identityʳ)
+open Induction using (Bin; ⟨⟩; _O; _I; from; inc; to; law₁)
 
 module plfa.part1.Relations where
 
@@ -220,20 +223,15 @@ data _<_ : ℕ → ℕ → Set where
 <-trans (s<s m<n) (s<s n<p) = s<s (<-trans m<n n<p)
 
 -- # Exercise trichotomy (practice)
+
+-- Define `m > n` to be the same as `n < m`.
+_>_ : ℕ → ℕ → Set
+_>_ m n = n < m
+
 -- Show that strict inequality satisfies a weak version of trichotomy,
 -- in the sense that for any `m` and `n` that one of the following holds: * `m < n`, * `m ≡ n`, or * `m > n`.
--- Define `m > n` to be the same as `n < m`.
 -- You will need a suitable data declaration, similar to that used for totality.
 -- (We will show that the three cases are exclusive after we introduce negation)
-
-infix 4 _>_
-data _>_ : ℕ → ℕ → Set where
-  s>z : ∀ {n   : ℕ}         → suc n > zero
-  s>s : ∀ {n m : ℕ} → n > m → suc n > suc m
-
--- todo reescribir así
-_>1_ : ℕ → ℕ → Set
-_>1_ m n = n < m
 
 data Trichotomy (m n : ℕ) : Set where
   equal   : m ≡ n → Trichotomy m n
@@ -243,12 +241,12 @@ data Trichotomy (m n : ℕ) : Set where
 <-trichotomy : ∀ (m n : ℕ) → Trichotomy m n
 <-trichotomy zero    zero    = equal refl
 <-trichotomy zero    (suc n) = lesser z<s
-<-trichotomy (suc m) zero    = greater s>z
+<-trichotomy (suc m) zero    = greater z<s
 <-trichotomy (suc m) (suc n)
   with <-trichotomy m n 
 ...       | equal   m≡n = equal (cong suc m≡n)
 ...       | lesser  m<n = lesser (s<s m<n)
-...       | greater m>n = greater (s>s m>n)
+...       | greater n<m = greater (s<s n<m)
 
 
 -- # Exercise +-mono-< (practice)
@@ -280,7 +278,7 @@ data Trichotomy (m n : ℕ) : Set where
 
 -- ^ 2nd: show `m < n → suc m ≤ n`
 <-iff-≤ : ∀ {m n : ℕ} → m < n → suc m ≤ n
-<-iff-≤ {zero}  {suc n} 0<n₁  = s≤s z≤n
+<-iff-≤ {zero}  {suc n} 0<n₁      = s≤s z≤n
 <-iff-≤ {suc m} {suc n} (s<s m<n) = s≤s (<-iff-≤ m<n)
 
 -- # Exercise <-trans-revisited (practice)
@@ -308,3 +306,137 @@ n≤N {suc n} = s≤s n≤N
 <-trans-revisitedʷ m<n n<p
   with <-iff-≤ m<n | <-iff-≤ n<p
 ...   | m₁≤n       | n₁≤p       = ≤-iff-< (≤-trans m₁≤n (≤-trans n≤N n₁≤p))
+
+-- # Even and odd
+-- As a further example, let's specify even and odd numbers.
+-- Inequality and strict inequality are binary relations,
+-- while even and odd are unary relations, sometimes called predicates:
+
+data even : ℕ → Set
+data odd  : ℕ → Set
+
+data even where
+  zero : even zero
+  suc  : ∀ {n : ℕ} → odd n → even (suc n)
+
+data odd where
+  suc  : ∀ {n : ℕ} → even n → odd (suc n)
+
+-- This is our first use of overloaded constructors.
+-- Here `suc` means one of three constructors:
+-- suc : ℕ → ℕ
+-- suc : ∀ {n : ℕ} → odd  n → even (suc n)
+-- suc : ∀ {n : ℕ} → even n → odd  (suc n)
+
+-- Due to how it does type inference,
+-- ! Agda does NOT allow overloading of defined names (function names),
+-- ! but allows to overload constructors
+
+-- We show that the sum of two even numbers is even:
+e+e≡e : ∀ {m n : ℕ} → even m → even n → even (m + n)
+o+e≡o : ∀ {m n : ℕ} → odd  m → even n → odd  (m + n)
+
+e+e≡e zero     en = en
+e+e≡e (suc om) en = suc (o+e≡o om en)
+
+o+e≡o (suc em) en = suc (e+e≡e em en)
+
+-- This is our first use of mutually recursive functions.
+-- Since each identifier must be defined before it is used,
+-- we first give the signatures for both functions and then the equations that define them.
+
+-- # Exercise `o+o≡e` (stretch)
+-- Show that the sum of two odd numbers is even.
+
+o+o≡e : ∀ {m n : ℕ} → odd m → odd n → even (m + n)
+o+o≡e (suc zero)    on = suc on
+o+o≡e (suc (suc x)) on = suc (suc (o+o≡e x on))
+
+-- ? por qué no funcionan?
+
+-- o+o≡e′ : ∀ {m n : ℕ} → odd m → odd n → even (m + n)
+-- o+o≡e′ (suc x) (suc y) = suc (suc (e+e≡e x y))
+
+-- o+o≡e′′ : ∀ {m n : ℕ} → odd m → odd n → even (m + n)
+-- o+o≡e′′ om (suc y) = suc (o+e≡o om y)
+
+-- ? suc _n_310 != n + suc n₁ of type ℕ
+-- ? when checking that the inferred type of an application
+-- ?   odd (suc _n_310)
+-- ? matches the expected type
+-- ?   odd (n + suc n₁)
+
+-- # Exercise `Bin-predicates` (stretch)
+
+-- Recall that Exercise Bin defines a datatype Bin of bitstrings representing natural numbers.
+-- Representations are not unique due to leading zeros.
+-- Define a predicate over all bitstrings that holds if the bitstring is canonical
+--   Can : Bin → Set
+--   One : Bin → Set (auxiliar, holds only if the bistring has a leading one)
+
+data One : Bin → Set
+data Can : Bin → Set
+
+-- TODO definir One sin usar `inc`ya que es una función y no un constructor.
+data One where
+  bit  : One (⟨⟩ I)
+  sucᵇ : ∀ {b : Bin} → One b → One (inc b)
+data Can where
+  zero : Can (⟨⟩ O)
+  bin  : ∀ {b : Bin} → One b → Can b
+
+-- Show that increment preserves canonical bitstrings:
+-- Can b → Can (inc b)
+
+inc¹ : ∀ {b : Bin} → One b → One (inc b)
+inc¹ ob = sucᵇ ob
+
+incᶜ : ∀ {b : Bin} → Can b → Can (inc b)
+incᶜ zero     = bin bit
+incᶜ (bin b₁) = bin (inc¹ b₁)
+
+
+-- Show that converting a natural to a bitstring always yields a canonical bitstring:
+--   Can (to n)
+
+toᶜ : ∀ {n : ℕ} → Can (to n)
+toᶜ {zero}  = zero
+toᶜ {suc n} = incᶜ (toᶜ {n})
+
+
+-- Show that converting a canonical bitstring to a natural and back is the identity:
+--   Can b → to (from b) ≡ b
+-- (Hint: For each of these, you may first need to prove related properties of One.
+-- Also, you may need to prove that if One b then 1 is less or equal to the result of from b.)
+
+-- TODO lo pide el ejercicio pero no lo necesité (?)
+-- lema : ∀ {b : Bin} → One b → 1 ≤ from b
+-- lema bit = s≤s z≤n
+-- lema (sucᵇ ob) = {!   !}
+
+_<< : ∀ {b : Bin} → One b → Bin
+_<< {b} _ = b
+
+-- !! Estoy seguro que estoy "haciendo trampa"
+cast¹ : ∀ {b : Bin} → One b → to (from b) ≡ b 
+cast¹ bit = refl                  -- (⟨⟩ I) ≡ (⟨⟩ I)
+cast¹ (sucᵇ ob) with ob <<
+... | b = 
+  begin
+    to (from (inc b))
+  ≡⟨ cong to (law₁ b) ⟩
+    to (suc (from b))
+  ≡⟨ refl ⟩
+    inc (to (from b))
+  ≡⟨ cong inc (cast¹ ob) ⟩
+    inc b
+  ∎
+-- ?0 : to (from (inc b)) ≡ inc b
+--          to (from (inc b)) ≡ inc b
+--  <law′>≡ to (suc (from b)) ≡ inc b
+--    <to>≡ inc (to (from b)) ≡ inc b
+-- <cast¹>≡ inc b ≡ inc b
+
+castᶜ : ∀ {b : Bin} → Can b → to (from b) ≡ b 
+castᶜ zero    = refl
+castᶜ (bin x) = cast¹ x
